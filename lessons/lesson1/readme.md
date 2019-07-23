@@ -1,6 +1,8 @@
 In this step, we would create a simple module named service locator. 
 ![step1.png](add-service-locator-module.png)
 
+# Prepare data
+We would use data in src/assets/servicelocators.json.
 
 # Add a module
 
@@ -10,78 +12,93 @@ git apply --whitespace=fix step1-add-a-module.patch
 ```
 
 
-## 1. set configurations in src/assets/settings.json.
+## 1. Add module in src/settings/HomeListView.json.
 Add action configuration in src/assets/settings.json.
 Action means the user event, like click, drag and so on.
 
 ```
-"menu:servicelocator": {
-    "id": "menu:servicelocator",
-    "label": "Service Locator",
-    "icon": "talend-folder",
-    "payload": {
-      "type": "MENU_LINK",
-      "cmf": {
-        "routerReplace": "/servicelocator"
-      }
-    }
-}
-```
-
-Add view configuration in src/assets/settings.json. 
-We can define side panel, header bar, action dropdown, list and so on.
-
-```
-"servicelocator": {
-    "didMountActionCreator": "servicelocator:fetchAll",
-    "sidepanel": { "_ref": "SidePanel#default" },
-    "list": {
-      "collectionId": "datasets",
+    "HomeListView#servicelocators": {
+      "saga": "handleServiceLocators",
+      "sidepanel": {},
       "list": {
-        "columns": [
-          { "key": "id", "label": "ID" },
-          { "key": "label", "label": "Name" },
-          { "key": "created",  "label": "Created" },
-          { "key": "tags", "label": "Tags" }
-        ]
-      },
-      "toolbar": {
-        "filter": {
-          "placeholder": "Find a dataset"
-        },
-        "sort": {
-          "options": [
-            { "id": "label", "name": "Name" },
-            { "id": "created", "name": "Created" }
+        "id": "servicelocator-list",
+        "collectionId": "servicelocators",
+        "list": {
+          "columns": [
+            { "key": "id", "label": "ID" },
+            { "key": "status", "label": "Status" },
+            { "key": "endpoint", "label": "Endpoint" },
+            { "key": "uptime", "label": "Uptime" },
+            { "key": "namespace", "label": "Namespace" }
           ]
+        },
+        "toolbar": {
+          "filter": {
+            "placeholder": "Find a ServiceLocator"
+          },
+          "sort": {
+            "options": [
+              { "id": "label", "name": "Name" },
+              { "key": "status", "label": "Status" },
+              { "id": "namespace", "name": "Namespace" }
+            ]
+          }
+        },
+        "initialState": {
+          "sortOn": "label"
         }
-      },
-      "initialState": {
-        "sortOn": "label"
       }
     }
-}
-```	
-	
-Add route configuration in src/assets/settings.json.
 ```
-{
-    "path": "servicelocator",
-    "component": "HomeListView",
-    "view": "servicelocator"
-}
+
+## 2. Add router in src/settings/router.json
+
+```
+      {
+        "path": "servicelocators",
+        "component": "HomeListView",
+        "componentId": "servicelocators"
+      }
 ```	
 	
-Add sidepanel configuration in src/assets/settings.json.
+## 3. Add menu in src/settings/SidePanel.json	
+
+```
+    "menu:servicelocators": {
+      "id": "menu:servicelocators",
+      "label": "Service Locators",
+      "icon": "talend-folder",
+      "payload": {
+        "type": "MENU_LINK",
+        "cmf": {
+          "routerReplace": "/servicelocators"
+        }
+      }
+    }
+```
+
 ```
 	"actionIds": ["menu:datastores", "menu:datasets","menu:servicelocator"]
 ```	
 
-	
-## 2. Register action in src/app/configure.js.
+## 4. Add data handler in src/app/sagas.js	
+We create handleServiceLocators.js to handle data.
+
 ```
-	registerActionCreator('servicelocator:fetchAll', fetchDataSets);
+import cmf from '@talend/react-cmf';
+import { call, put } from 'redux-saga/effects';
+import { ERROR_GETTING_SERVICELOCATORS } from '../constants';
+
+export default function* handleServiceLocators() {
+    const { response, data } = yield call(cmf.sagas.http.get, '/servicelocators.json');
+    if (!response.ok) {
+        yield put({
+            type: ERROR_GETTING_SERVICELOCATORS,
+            data,
+        });
+    } else {
+        yield put(cmf.actions.collections.addOrReplace('servicelocators', data));
+    }
+}
 ```
-	
-In next step, we will show servicelocator's own data in servicelocator.json.
-	
+		

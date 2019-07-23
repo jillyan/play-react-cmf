@@ -1,0 +1,268 @@
+diff --git a/lessons/lesson1/readme.md b/lessons/lesson1/readme.md
+index f3df155..120bca4 100644
+--- a/lessons/lesson1/readme.md
++++ b/lessons/lesson1/readme.md
+@@ -1,6 +1,8 @@
+ In this step, we would create a simple module named service locator. 
+ ![step1.png](add-service-locator-module.png)
+ 
++# Prepare data
++We would use data in src/assets/servicelocators.json.
+ 
+ # Add a module
+ 
+@@ -10,78 +12,93 @@ git apply --whitespace=fix step1-add-a-module.patch
+ ```
+ 
+ 
+-## 1. set configurations in src/assets/settings.json.
++## 1. Add module in src/settings/HomeListView.json.
+ Add action configuration in src/assets/settings.json.
+ Action means the user event, like click, drag and so on.
+ 
+ ```
+-"menu:servicelocator": {
+-    "id": "menu:servicelocator",
+-    "label": "Service Locator",
+-    "icon": "talend-folder",
+-    "payload": {
+-      "type": "MENU_LINK",
+-      "cmf": {
+-        "routerReplace": "/servicelocator"
++    "HomeListView#servicelocators": {
++      "saga": "handleServiceLocators",
++      "sidepanel": {},
++      "list": {
++        "id": "servicelocator-list",
++        "collectionId": "servicelocators",
++        "list": {
++          "columns": [
++            { "key": "id", "label": "ID" },
++            { "key": "status", "label": "Status" },
++            { "key": "endpoint", "label": "Endpoint" },
++            { "key": "uptime", "label": "Uptime" },
++            { "key": "namespace", "label": "Namespace" }
++          ]
++        },
++        "toolbar": {
++          "filter": {
++            "placeholder": "Find a ServiceLocator"
++          },
++          "sort": {
++            "options": [
++              { "id": "label", "name": "Name" },
++              { "key": "status", "label": "Status" },
++              { "id": "namespace", "name": "Namespace" }
++            ]
++          }
++        },
++        "initialState": {
++          "sortOn": "label"
++        }
+       }
+     }
+-}
+ ```
+ 
+-Add view configuration in src/assets/settings.json. 
+-We can define side panel, header bar, action dropdown, list and so on.
++## 2. Add router in src/settings/router.json
+ 
+ ```
+-"servicelocator": {
+-    "didMountActionCreator": "servicelocator:fetchAll",
+-    "sidepanel": { "_ref": "SidePanel#default" },
+-    "list": {
+-      "collectionId": "datasets",
+-      "list": {
+-        "columns": [
+-          { "key": "id", "label": "ID" },
+-          { "key": "label", "label": "Name" },
+-          { "key": "created",  "label": "Created" },
+-          { "key": "tags", "label": "Tags" }
+-        ]
+-      },
+-      "toolbar": {
+-        "filter": {
+-          "placeholder": "Find a dataset"
+-        },
+-        "sort": {
+-          "options": [
+-            { "id": "label", "name": "Name" },
+-            { "id": "created", "name": "Created" }
+-          ]
+-        }
+-      },
+-      "initialState": {
+-        "sortOn": "label"
++      {
++        "path": "servicelocators",
++        "component": "HomeListView",
++        "componentId": "servicelocators"
+       }
+-    }
+-}
+ ```	
+ 	
+-Add route configuration in src/assets/settings.json.
++## 3. Add menu in src/settings/SidePanel.json	
++
+ ```
+-{
+-    "path": "servicelocator",
+-    "component": "HomeListView",
+-    "view": "servicelocator"
+-}
+-```	
+-	
+-Add sidepanel configuration in src/assets/settings.json.
++    "menu:servicelocators": {
++      "id": "menu:servicelocators",
++      "label": "Service Locators",
++      "icon": "talend-folder",
++      "payload": {
++        "type": "MENU_LINK",
++        "cmf": {
++          "routerReplace": "/servicelocators"
++        }
++      }
++    }
++```
++
+ ```
+ 	"actionIds": ["menu:datastores", "menu:datasets","menu:servicelocator"]
+ ```	
+ 
+-	
+-## 2. Register action in src/app/configure.js.
++## 4. Add data handler in src/app/sagas.js	
++We create handleServiceLocators.js to handle data.
++
+ ```
+-	registerActionCreator('servicelocator:fetchAll', fetchDataSets);
++import cmf from '@talend/react-cmf';
++import { call, put } from 'redux-saga/effects';
++import { ERROR_GETTING_SERVICELOCATORS } from '../constants';
++
++export default function* handleServiceLocators() {
++    const { response, data } = yield call(cmf.sagas.http.get, '/servicelocators.json');
++    if (!response.ok) {
++        yield put({
++            type: ERROR_GETTING_SERVICELOCATORS,
++            data,
++        });
++    } else {
++        yield put(cmf.actions.collections.addOrReplace('servicelocators', data));
++    }
++}
+ ```
+-	
+-In next step, we will show servicelocator's own data in servicelocator.json.
+-	
+\ No newline at end of file
++		
+\ No newline at end of file
+diff --git a/src/app/constants/index.js b/src/app/constants/index.js
+index ed1ebfc..ad59dc9 100644
+--- a/src/app/constants/index.js
++++ b/src/app/constants/index.js
+@@ -4,3 +4,4 @@
+  */
+ export const ERROR_GETTING_DATASETS = 'ERROR_GETTING_DATASETS';
+ export const ERROR_GETTING_DATASTORES = 'ERROR_GETTING_DATASTORES';
++export const ERROR_GETTING_SERVICELOCATORS = 'ERROR_GETTING_SERVICELOCATORS';
+diff --git a/src/app/sagas/index.js b/src/app/sagas/index.js
+index 66e6933..6f9a56f 100644
+--- a/src/app/sagas/index.js
++++ b/src/app/sagas/index.js
+@@ -1,2 +1,3 @@
+ export { default as handleDatastores } from './handleDatastores';
+ export { default as handleDatasets } from './handleDatasets';
++export handleServiceLocators from './handleServiceLoactors';
+diff --git a/src/settings/HomeListView.json b/src/settings/HomeListView.json
+index d43ffd7..aebf402 100644
+--- a/src/settings/HomeListView.json
++++ b/src/settings/HomeListView.json
+@@ -60,6 +60,38 @@
+           "sortOn": "label"
+         }
+       }
++    },
++    "HomeListView#servicelocators": {
++      "saga": "handleServiceLocators",
++      "sidepanel": {},
++      "list": {
++        "id": "servicelocator-list",
++        "collectionId": "servicelocators",
++        "list": {
++          "columns": [
++            { "key": "id", "label": "ID" },
++            { "key": "status", "label": "Status" },
++            { "key": "endpoint", "label": "Endpoint" },
++            { "key": "uptime", "label": "Uptime" },
++            { "key": "namespace", "label": "Namespace" }
++          ]
++        },
++        "toolbar": {
++          "filter": {
++            "placeholder": "Find a ServiceLocator"
++          },
++          "sort": {
++            "options": [
++              { "id": "label", "name": "Name" },
++              { "key": "status", "label": "Status" },
++              { "id": "namespace", "name": "Namespace" }
++            ]
++          }
++        },
++        "initialState": {
++          "sortOn": "label"
++        }
++      }
+     }
+   }
+ }
+diff --git a/src/settings/SidePanel.json b/src/settings/SidePanel.json
+index ce453de..8b19b9c 100644
+--- a/src/settings/SidePanel.json
++++ b/src/settings/SidePanel.json
+@@ -21,11 +21,22 @@
+           "routerReplace": "/datastores"
+         }
+       }
++    },
++    "menu:servicelocators": {
++      "id": "menu:servicelocators",
++      "label": "Service Locators",
++      "icon": "talend-folder",
++      "payload": {
++        "type": "MENU_LINK",
++        "cmf": {
++          "routerReplace": "/servicelocators"
++        }
++      }
+     }
+   },
+   "props": {
+     "SidePanel#default" : {
+-      "actionIds": ["menu:datastores", "menu:datasets"]
++      "actionIds": ["menu:datastores", "menu:datasets","menu:servicelocators"]
+     }
+   }
+ }
+diff --git a/src/settings/router.json b/src/settings/router.json
+index 85c0f3d..6f65c04 100644
+--- a/src/settings/router.json
++++ b/src/settings/router.json
+@@ -20,6 +20,11 @@
+         "path": "datastores",
+         "component": "HomeListView",
+         "componentId": "datastores"
++      },
++      {
++        "path": "servicelocators",
++        "component": "HomeListView",
++        "componentId": "servicelocators"
+       }
+     ]
+   }
