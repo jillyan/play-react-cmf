@@ -1,18 +1,16 @@
-In this step, we would create a simple module named service locator. 
+In this lesson, we would create a simple module named service locator. Just replace the src folder you could get the result.
 ![step1.png](add-service-locator-module.png)
 
-# Prepare data
+# Process details
+## Prepare data
 We would use data in src/assets/servicelocators.json.
 
-# Add a module
+## Add a module
 
 We would set route, view and action configurations in src/assets/settings.json, also register the action in configure.js.
-```
-git apply --whitespace=fix step1-add-a-module.patch
-```
 
 
-## 1. Add module in src/settings/HomeListView.json.
+### 1. Add module in src/settings/HomeListView.json.
 Add action configuration in src/assets/settings.json.
 Action means the user event, like click, drag and so on.
 
@@ -51,7 +49,7 @@ Action means the user event, like click, drag and so on.
     }
 ```
 
-## 2. Add router in src/settings/router.json
+### 2. Add router in src/settings/router.json
 
 ```
       {
@@ -61,7 +59,7 @@ Action means the user event, like click, drag and so on.
       }
 ```	
 	
-## 3. Add menu in src/settings/SidePanel.json	
+### 3. Add menu in src/settings/SidePanel.json	
 
 ```
     "menu:servicelocators": {
@@ -81,7 +79,7 @@ Action means the user event, like click, drag and so on.
 	"actionIds": ["menu:datastores", "menu:datasets","menu:servicelocator"]
 ```	
 
-## 4. Add data handler in src/app/sagas.js	
+### 4. Add data handler in src/app/sagas.js	
 We create handleServiceLocators.js to handle data.
 
 ```
