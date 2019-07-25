@@ -1,0 +1,101 @@
+{
+  "props": {
+    "HomeListView#datasets": {
+      "saga": "handleDatasets",
+      "sidepanel": {},
+      "list": {
+        "id": "datasets-list",
+        "collectionId": "datasets",
+        "list": {
+          "columns": [
+            { "key": "id", "label": "ID" },
+            { "key": "label", "label": "Name" },
+            { "key": "created",  "label": "Created" },
+            { "key": "tags", "label": "Tags" }
+          ]
+        },
+        "toolbar": {
+          "filter": {
+            "placeholder": "Find a dataset"
+          },
+          "sort": {
+            "options": [
+              { "id": "label", "name": "Name" },
+              { "id": "created", "name": "Created" }
+            ]
+          }
+        },
+        "initialState": {
+          "sortOn": "label"
+        }
+      }
+    },
+    "HomeListView#datastores": {
+      "saga": "handleDatastores",
+      "sidepanel": {},
+      "list": {
+        "id": "datastores-list",
+        "collectionId": "datastores",
+        "list": {
+          "columns": [
+            { "key": "id", "label": "ID" },
+            { "key": "label", "label": "Name" },
+            { "key": "type",  "label": "Type" },
+            { "key": "datasets", "label": "Number of datasets" }
+          ]
+        },
+        "toolbar": {
+          "filter": {
+            "placeholder": "Find a datastore"
+          },
+          "sort": {
+            "options": [
+              { "id": "label", "name": "Name" },
+              { "id": "type", "name": "Type" },
+              { "id": "datasets", "name": "Number of datasets" }
+            ]
+          }
+        },
+        "initialState": {
+          "sortOn": "label"
+        }
+      }
+    },
+    "HomeListView#servicelocators": {
+      "saga": "handleServiceLocators",
+      "sidepanel": {},
+      "list": {
+        "id": "servicelocator-list",
+        "collectionId": "servicelocators",
+        "actions":{
+          "left": ["servicelocator:refresh"]
+        },
+        "list": {
+          "columns": [
+            { "key": "id", "label": "ID" },
+            { "key": "status", "label": "Status" },
+            { "key": "endpoint", "label": "Endpoint" },
+            { "key": "uptime", "label": "Uptime" },
+            { "key": "namespace", "label": "Namespace" }
+          ]
+        },
+        "toolbar": {
+          "filter": {
+            "placeholder": "Find a ServiceLocator"
+          },
+          "sort": {
+            "options": [
+              { "id": "label", "name": "Name" },
+              { "key": "status", "label": "Status" },
+              { "id": "namespace", "name": "Namespace" }
+            ]
+          },
+          "pagination": {}
+        },
+        "initialState": {
+          "sortOn": "label"
+        }
+      }
+    }
+  }
+}
