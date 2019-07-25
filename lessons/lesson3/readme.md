@@ -6,7 +6,7 @@ This step we will add redux-logger for action trace. With this middleware, we ca
 
 please see [redux middlewares acknowledge](https://redux.js.org/advanced/middleware) and [basic introduction for redux-logger](https://www.npmjs.com/package/redux-logger).
 
-Redux middlewares will change process from action -> reducer to be action -> middlewares -> reducer.
+Redux middlewares will change process from `action -> reducer` to be `action -> middlewares -> reducer`.
 
 ```
 import { createStore, applyMiddleware } from 'redux';
@@ -17,7 +17,7 @@ let store = createStore(
 )
 ```
 
-Then if a action is dispatched, then the trigger process will be A(action) -> B(action) -> C(action) -> store.dispatch(action), but the execute process will be C(action) -> B(action) -> A(action).
+Then if a action is dispatched, then the trigger process will be `A(action) -> B(action) -> C(action) -> store.dispatch(action)`, but the execute process will be `C(action) -> B(action) -> A(action)`.
 
 By reading the [cmf bootstrap.md](https://github.com/Talend/ui/blob/master/packages/cmf/src/bootstrap.md), we get to know how to add middle wares.
 
