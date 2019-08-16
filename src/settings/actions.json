@@ -1,0 +1,12 @@
+{
+  "actions":{
+    "servicelocator:refresh": {
+      "label": "Refresh",
+      "bsStyle": "primary",
+      "icon": "talend-refresh",
+      "payload": {
+        "type": "REFRESH_SERVICE_LOCATORS"
+      }
+    }
+  }
+}

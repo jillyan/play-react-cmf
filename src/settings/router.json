@@ -23,7 +23,7 @@
       },
       {
         "path": "servicelocators",
-        "component": "SimpleHomeView",
+        "component": "CustomizedHomeListView",
         "componentId": "servicelocators"
       }
     ]
