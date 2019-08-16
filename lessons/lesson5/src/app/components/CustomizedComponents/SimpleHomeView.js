@@ -15,7 +15,6 @@ function SimpleHomeViewComponent({
     id,
     hasTheme,
     sidepanel,
-    list,
     header,
 }) {
     const Renderers = Inject.getAll(getComponent,{ HeaderBar, SidePanel });
