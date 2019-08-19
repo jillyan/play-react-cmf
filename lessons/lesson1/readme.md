@@ -1,4 +1,4 @@
-In this lesson, we would create a simple module named service locator. Just replace the src folder you could get the result.
+In this lesson, we would create a simple module named service locator. Just replace the src folder you could get the result.  
 ![step1.png](add-service-locator-module.png)
 
 # Process details

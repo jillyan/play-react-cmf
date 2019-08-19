@@ -20,11 +20,6 @@
         "path": "datastores",
         "component": "HomeListView",
         "componentId": "datastores"
-      },
-      {
-        "path": "servicelocators",
-        "component": "CustomizedHomeListView",
-        "componentId": "servicelocators"
       }
     ]
   }

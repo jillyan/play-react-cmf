@@ -21,22 +21,11 @@
           "routerReplace": "/datastores"
         }
       }
-    },
-    "menu:servicelocators": {
-      "id": "menu:servicelocators",
-      "label": "Service Locators",
-      "icon": "talend-smiley-enthusiast",
-      "payload": {
-        "type": "MENU_LINK",
-        "cmf": {
-          "routerReplace": "/servicelocators"
-        }
-      }
     }
   },
   "props": {
     "SidePanel#default" : {
-      "actionIds": ["menu:datastores", "menu:datasets","menu:servicelocators"]
+      "actionIds": ["menu:datastores", "menu:datasets"]
     }
   }
 }

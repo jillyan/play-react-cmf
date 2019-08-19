@@ -60,6 +60,42 @@
           "sortOn": "label"
         }
       }
+    },
+    "SimpleHomeView#servicelocators": {
+      "saga": "handleServiceLocators",
+      "sidepanel": {},
+      "list": {
+        "id": "servicelocator-list",
+        "collectionId": "servicelocators",
+        "actions":{
+          "left": ["servicelocator:refresh"]
+        },
+        "list": {
+          "columns": [
+            { "key": "id", "label": "ID" },
+            { "key": "status", "label": "Status" },
+            { "key": "endpoint", "label": "Endpoint" },
+            { "key": "uptime", "label": "Uptime" },
+            { "key": "namespace", "label": "Namespace" }
+          ]
+        },
+        "toolbar": {
+          "filter": {
+            "placeholder": "Find a ServiceLocator"
+          },
+          "sort": {
+            "options": [
+              { "id": "label", "name": "Name" },
+              { "key": "status", "label": "Status" },
+              { "id": "namespace", "name": "Namespace" }
+            ]
+          },
+          "pagination": {}
+        },
+        "initialState": {
+          "sortOn": "label"
+        }
+      }
     }
   }
 }

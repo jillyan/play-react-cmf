@@ -34,6 +34,8 @@ function SimpleHomeViewComponent({
     );
 }
 
+SimpleHomeViewComponent.displayName = 'SimpleHomeView';
+
 export default cmfConnect({
     omitCMFProps: true,
     withComponentRegistry: true,

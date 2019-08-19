@@ -7,12 +7,14 @@ import '@talend/bootstrap-theme/src/theme/theme.scss';
 import cmf from '@talend/react-cmf';
 import getRouter from '@talend/react-cmf-router';
 import { registerAllContainers } from '@talend/react-containers/lib/register';
+import logger from 'redux-logger';
 import actionCreators from './actions';
 import components from './components';
 import expressions from './expressions';
 import reducer from './reducers';
 import * as sagas from './sagas';
 import saga from './saga';
+
 
 /**
  * This will register all containers in the CMF registry
@@ -47,4 +49,5 @@ cmf.bootstrap({
 	AppLoader: 'AppLoader',
 	modules: [router.cmfModule],
 	RootComponent: router.RootComponent,
+    middlewares: [logger],
 });

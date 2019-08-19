@@ -1,6 +1,7 @@
 redux-logger
 
-This step we will add redux-logger for action trace. With this middleware, we can get the previous state, current action, next state in web browser console. It helps a lot.
+This step we will add redux-logger for action trace.  
+With this middleware, we can get the previous state, current action, next state in web browser console. It helps a lot.
 
 ![avatar](redux-logger.png)
 
@@ -21,7 +22,7 @@ Then if a action is dispatched, then the trigger process will be `A(action) -> B
 
 By reading the [cmf bootstrap.md](https://github.com/Talend/ui/blob/master/packages/cmf/src/bootstrap.md), we get to know how to add middle wares.
 
-We add redux-logger in index.js.
+We add redux-logger in src/app/index.js.
 ```
 import logger from 'redux-logger';
 
